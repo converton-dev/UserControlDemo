@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,7 +34,7 @@ public partial class SearchBar : UserControl
         set => SetValue(ItemsSourceProperty, value);
     }
 
-    public ObservableCollection<string?> Results { get; set; } = [];
+    public ObservableCollection<string?> ResultsSorted { get; set; } = [];
 
     #endregion
     
@@ -58,16 +59,20 @@ public partial class SearchBar : UserControl
     private void SearchInList(string query)
     {
         if (ItemsSource is null) return;
-        Results.Clear();
-        var rawResults = new List<string?>();
+        
+        ResultsSorted.Clear();
+        var rawResults = new List<string>();
+        
         foreach (var item in ItemsSource)
         {
+            if (item is null) continue;
             var itemName = item.ToString()?.ToLowerInvariant();
             var queryLower = query.ToLowerInvariant();
             if (itemName?.Contains(queryLower) is true)
-                rawResults.Add(item.ToString());
+                rawResults.Add(item.ToString() ?? "");
         }
 
-        var results = Results.ToList();
+        var results = rawResults.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToList();
+        foreach (var result in results) ResultsSorted.Add(result);
     }
 }

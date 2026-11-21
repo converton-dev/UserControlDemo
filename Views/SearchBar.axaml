@@ -11,7 +11,7 @@
         <TextBox PlaceholderText="{Binding $parent[local:SearchBar].Watermark}" Name="Bar"
                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
                  TextChanged="TextChanged" Loaded="Loaded"/>
-        <ListBox ItemsSource="{Binding #UserControl.Results}" Name="ResultsListBox"
+        <ListBox ItemsSource="{Binding #UserControl.ResultsSorted}" Name="Results"
                  Background="Transparent"/>
     </StackPanel>
     
